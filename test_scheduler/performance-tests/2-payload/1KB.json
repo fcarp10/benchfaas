@@ -1,0 +1,47 @@
+[
+    {
+      "_id": "60d4939dc4857af8b9537679",
+      "index": 0,
+      "guid": "b330cecc-06ea-4bac-a9a0-e50e145b346f",
+      "isActive": true,
+      "balance": "$2,507.74",
+      "picture": "http://placehold.it/32x32",
+      "age": 31,
+      "eyeColor": "green",
+      "name": "Shari Robertson",
+      "gender": "female",
+      "company": "FUELWORKS",
+      "email": "sharirobertson@fuelworks.com",
+      "phone": "+1 (838) 494-3130",
+      "address": "454 Conduit Boulevard, Evergreen, Puerto Rico, 3557",
+      "about": "Elit id reprehenderit ad dolor do consequat duis do velit duis. Non sint ullamco eu esse pariatur ad eiusmod officia commodo esse. Duis nisi minim aliqua consequat reprehenderit excepteur aliqua incididunt voluptate labore cillum non tempor. Est do aute sint sunt quis velit.\r\n",
+      "registered": "2019-12-11T05:06:39 -01:00",
+      "latitude": 4.553327,
+      "longitude": 0.178379,
+      "tags": [
+        "irure",
+        "fugiat",
+        "nostrud",
+        "pariatur",
+        "adipisicing",
+        "velit",
+        "ad"
+      ],
+      "friends": [
+        {
+          "id": 0,
+          "name": "Ball Guthrie"
+        },
+        {
+          "id": 1,
+          "name": "Annie Schroeder"
+        },
+        {
+          "id": 2,
+          "name": "Pansy Juarez"
+        }
+      ],
+      "greeting": "Hello, Shari Robertson! You have 7 unread messages.",
+      "favoriteFruit": "apple"
+    }
+  ]
