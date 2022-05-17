@@ -20,17 +20,26 @@ Serverless functions used for the benchmarks can be found
 
 ### Prerequisites
 
-Tester machine: 
-- Linux based OS
-- Apache JMeter v5.4.3 ([download](https://jmeter.apache.org/download_jmeter.cgi))
-- (optional) Local container registry ([instructions](https://docs.docker.com/registry/deploying/))
+#### Tester machine
 
-Cluster of virtual machines (VMs) or physical machines (PMs):
+- Linux based OS
+- Apache JMeter v5.4.3
+  ([download](https://jmeter.apache.org/download_jmeter.cgi))
+- (Optional) Local container registry
+  ([instructions](https://docs.docker.com/registry/deploying/))
+
+#### Cluster of virtual machines (VMs) or physical machines (PMs)
+
 - VMs (Hypervisor):
   - Linux based OS
-  - libvirt/KVM ([Ubuntu](https://ubuntu.com/server/docs/virtualization-libvirt) | [Arch Linux](https://wiki.archlinux.org/title/libvirt))
-  - Vagrant ([installation](https://learn.hashicorp.com/tutorials/vagrant/getting-started-install?in=vagrant/getting-started))
-  - Vagrant plugins ([installation](https://www.vagrantup.com/docs/plugins/usage)), in the following order: 
+  - libvirt/KVM ([Ubuntu](https://ubuntu.com/server/docs/virtualization-libvirt)
+    | [Arch Linux](https://wiki.archlinux.org/title/libvirt))
+  - Vagrant
+    ([installation](https://learn.hashicorp.com/tutorials/vagrant/getting-started-install?in=vagrant/getting-started))
+    - Configure password-less sudo for NFS as explained
+      [here](https://www.vagrantup.com/docs/synced-folders/nfs#root-privilege-requirement).
+  - Vagrant plugins
+    ([installation](https://www.vagrantup.com/docs/plugins/usage)): 
     - `vagrant-libvirt`
     - `vagrant-hostmanager`
   - netem (`tc`): already included in most Linux distros.
@@ -38,34 +47,56 @@ Cluster of virtual machines (VMs) or physical machines (PMs):
   - x86_64/ARM64 based devices
   - Linux based OS
   - GbE Switch/Router
-  - [Nebula](https://github.com/slackhq/nebula)
+  - Nebula ([installation](https://github.com/slackhq/nebula))
   
 All VMs/PMs need additional internet connection for the deployment of required
 tools, but not for the execution of benchmarks.
 
+The public SSH key from the tester machine needs to be added to the Hypervisor
+and to all PMs.
+
+
 ### User guide
 
-1. Make sure the prerequisites are met on all devices.
-2. Create a LAN network by connecting all devices to a switch and configuring
-   private static IP addresses. 
-3. (optional) Start the local Docker container registry.
-4. Clone this repository to the tester machine. 
-5. Modify `config.yml` and `testbed_controller.sh` accordingly to your use case.
+1. Create a LAN network by connecting all devices to a switch and configuring
+   private static IP addresses.
+2. Clone this repository to the tester machine. 
+3. Modify `config.yml` and `testbed_controller.sh` accordingly to your use case.
    - When using VMs, adjust:
-      - `devices.hypervisor.address`: Hypervisor's IP
-      - `devices.testmachine.vm_interface`: Tester machine interface connecting to the hypervisor.
-      - `devices.vm.benchmark_bridge`: Hypervisor's interface to bridge the VMs.
-      - `devices.vm.repoip`: IP of the machine with the local container registry. Leave blank when using a public registry.
-      - `devices.vm.privaterepo`: Name of the local container registry.
+     - `devices.hypervisor.address`: Hypervisor's IP
+     - `devices.hypervisor.login`: Username of the hypervisor.
+     - `devices.testmachine.vm_interface`: Tester machine interface connecting
+       to the hypervisor.
+     - `devices.vm.benchmark_bridge`: Hypervisor's interface to bridge the VMs.
+       - (Optional) Local container registry, leave blank when using the default
+         public registry specified on the `yaml` files:
+         - `devices.vm.repoip`: IP of the machine with the local container
+           registry.
+         - `devices.vm.repoport`: port of the machine with the local container
+           registry.
+         - `devices.vm.privaterepo`: Name of the local container registry.
    - When using PMs, adjust:
-      - `devices.testmachine.pm_interface`: Name of the interface connected to the PMs.
-      - ... TBD
-6. VMs (Hypervisor): customize `environment.rb`.
-7. PMs: 
-   - Make sure DNS resolution is working properly in all PMs.
-   - Install and configure Nebula in every PM [instuctions
-     here](https://github.com/slackhq/nebula), or run the script
-       `deployment_toolkit/nebula.sh` in any PM to install the nebula-cert
-       binary. The create key and certificates with: `nebula-cert sign -name
-       "worker1" -ip "192.168.50.101/24"`.
-8. Run `./testbed_controller.sh` from the tester machine.
+      - `devices.testmachine.pm_interface`: Name of the interface connected to
+        the PMs.
+      - ... TBD   
+4. Run `./testbed_controller.sh` from the tester machine.
+
+
+### Troubleshooting
+
+If you get the following error when deploying VMs using `qemu-kvm`: 
+
+```
+Error while creating domain: Error saving the server: Call to virDomainDefineXML failed: invalid argument: could not get preferred machine for /usr/bin/qemu-system-x86_64 type=kvm
+```
+
+Check the solution from [here](https://serverfault.com/questions/1002043/libvirt-has-no-kvm-capabilities-even-though-qemu-kvm-works/1002063#1002063).
+
+
+If you get the following error when deploying VMs using `qemu-kvm` on Ubuntu:
+
+```
+Error while creating domain: Error saving the server: Call to virDomainDefineXML failed: Cannot check QEMU binary /usr/libexec/qemu-kvm: No such file or directory
+```
+
+Check the solution from [here](https://github.com/kubevirt/kubevirt/issues/4303)
