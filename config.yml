@@ -1,0 +1,187 @@
+benchmark:
+  parameters:
+    2: 1KB 10KB 100KB 1MB
+    4: 100 200 300 400 500
+    5: 5 20
+  tests_to_execute:
+    pm:
+      1:
+        lcl: 1 2 3
+        cld: 1 2 3
+        bad: 1 2 3
+        typ: 1 2 3
+        opt: 1 2 3
+      3:
+        lcl: 4 5
+        cld: 4 5
+        bad: 4 5
+        typ: 4 5
+        opt: 4 5
+
+    vm:
+      1:
+        small:
+          lcl: 3
+          cld: 3
+          bad: 3
+          typ: 3
+          opt: 3
+
+        medium:
+          lcl: 3
+          cld: 3
+          bad: 3
+          typ: 3
+          opt: 3
+
+        large:
+          lcl: 1 2 3
+          cld: 1 2 3
+          bad: 1 2 3
+          typ: 1 2 3
+          opt: 1 2 3
+
+      3:
+        small:
+          lcl: 4
+          cld: 4
+          bad: 4
+          typ: 4
+          opt: 4
+
+        medium:
+          lcl: 4
+          cld: 4
+          bad: 4
+          typ: 4
+          opt: 4
+
+        large:
+          lcl: 4 5
+          cld: 4 5
+          bad: 4 5
+          typ: 4 5
+          opt: 4 5
+qos:
+  opt: ########### N = 5 ###########
+    intra: 
+      delay: 1.25 # (T_lat_cld/5)/2 (ms)
+      variance: 0.25 # (T_var_cld/5)/2 (ms)
+      packet_loss: 0.02 # (T_loss/5)/2 (%)
+    testmachine:
+      delay: 1.25 # (T_lat_cld/5)/2 (ms)
+      variance: 0.25 # (T_var_cld/5)/2 (ms)
+      packet_loss: 0.02 # (T_loss/5)/2 (%)
+  typ: ########### N = 3 ###########
+    intra:
+      delay: 2.08 # (T_lat_cld/3)/2 (ms)
+      variance: 0.42 # (T_var_cld/3)/2 (ms)
+      packet_loss: 0.03 # (T_loss_cld/3)/2 (%)
+    testmachine:
+      delay: 2.08 # (T_lat_cld/3)/2 (ms)
+      variance: 0.42 # (T_var_cld/3)/2 (ms)
+      packet_loss: 0.03 # (T_loss_cld/3)/2 (%)
+  bad: ########### N = 2 ###########
+    intra:
+      delay: 3.125 # (T_lat_cld/2)/2 (ms)
+      variance: 0.625 # (T_var_cld/2)/2 (ms)
+      packet_loss: 0.05 # (T_loss_cld/2)/2 (%)
+    testmachine:
+      delay: 3.125 # (T_lat_cld/N)/2 (ms)
+      variance: 0.625 # (T_var_cld/N)/2 (ms)
+      packet_loss: 0.05 # (T_loss_cld/N)/2 (%)
+  cld: ######## reference #########
+    intra:
+      delay: 0 
+      variance: 0 
+      packet_loss: 0 
+    testmachine: # (T_lat=25,T_var=5,T_loss=0.4)/2
+      delay: 12.5 # T_lat_cld (ms)
+      variance: 2.5 # T_var_cld (ms)
+      packet_loss: 0.2 # T_loss_cld (%)
+  lcl:
+    intra:
+      delay: 0
+      variance: 0
+      packet_loss: 0
+    testmachine:
+      delay: 0
+      variance: 0
+      packet_loss: 0
+
+software:
+  nebula:
+    version: 1.5.2
+    lighthouse:
+      address: lighthouse
+      port: 4242
+  k3s:
+    version: v1.23.6+k3s1
+    port: 6443
+  openfaas:
+    version: 10.0.8
+    function-namespace: openfaas-fn
+    functions:
+      fib-go
+      hello-world
+      payload-echo
+      img-classifier-hub
+      payload-echo-workflow
+  debug: false
+
+devices:
+  hypervisor:
+          #path: "/opt/development/deployment-serverless/deployment/"
+    path: "/tmp/"
+    address: 192.168.1.50
+    login: marc
+  testmachine:
+    path: "/opt/development/serverless-bench-journal/setup_new/deployment/"
+    resultspath: "/opt/development/results/"
+    pm_interface: enp6s0
+    vm_interface: enp6s0
+  pm:
+    path: "/tmp/"
+    reponame: privaterepo
+    repoport: 5000
+    repoip: 192.168.1.4
+    openfaas:
+      port: 31112
+    lighthouse:
+      address: lighthouse
+      port: 4242
+    devices:
+    - ssh_address: 192.168.1.20
+      login: ubuntu
+      qos_interface: eth0
+      lighthouse: true
+      headnode_advert: 192.168.50.100
+    - ssh_address: 192.168.1.21
+      login: ubuntu
+      qos_interface: eth0
+    - ssh_address: 192.168.1.22
+      login: ubuntu
+      qos_interface: eth0
+    - ssh_address: 192.168.1.23
+      login: ubuntu
+      qos_interface: eth0
+  vm:
+    benchmark_bridge: enp179s0
+    benchmark_ip: 192.168.1.225
+    image: generic/ubuntu2004
+    reponame: privaterepo
+    repoport: 5000
+    repoip: 192.168.1.4
+    openfaas:
+      port: 31112
+    machines:
+      small:
+        memory: 2048
+        cpus: 1
+      medium:
+        memory: 4096
+        cpus: 2
+      large:
+        memory: 8192
+        cpus: 4
+

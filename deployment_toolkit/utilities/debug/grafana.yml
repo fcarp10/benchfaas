@@ -1,0 +1,23 @@
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      uid: Prometheus
+      url: http://prometheus:9090
+      isDefault: true
+
+sidecar:
+    dashboards:
+      enabled: true
+      label: grafana-db
+#    datasources:
+#      enabled: true
+#      label: grafana-ds
+
+service:
+  type: NodePort
+  port: 3000
+  nodePort: 30043
+  protocol: TCP

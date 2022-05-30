@@ -1,0 +1,22 @@
+version: 1.0
+provider:
+    name: openfaas
+    gateway: http://127.0.0.1:8080
+functions:
+    fib-go:
+        image: fcarp10/fib-go:latest
+        name: fib-go
+        skip_build: true
+        requests:
+            cpu: 50m
+        labels:
+            com.openfaas.scale.factor: 10
+            com.openfaas.scale.min: 1
+            com.openfaas.scale.max: 500
+        annotations:
+            prometheus.io.scrape: "true"
+            prometheus.io.port: "8081"
+        environment:
+            read_timeout: 1m
+            write_timeout: 1m
+            exec_timeout: 1m
