@@ -48,7 +48,11 @@ Serverless functions used for the benchmarks can be found
   - Linux based OS
   - GbE Switch/Router
   - Nebula ([installation](https://github.com/slackhq/nebula))
-  
+
+For the instructions, it is assumed that all VMs/PMs are on the same LAN network
+with static IP addresses. However, by using Nebula the testbed also works with
+devices located in different networks even behind NATs or Firewalls. 
+
 All VMs/PMs need additional internet connection for the deployment of required
 tools, but not for the execution of benchmarks.
 
@@ -58,28 +62,32 @@ and to all PMs.
 
 ### User guide
 
-1. Create a LAN network by connecting all devices to a switch and configuring
-   private static IP addresses.
-2. Clone this repository to the tester machine. 
-3. Modify `config.yml` and `testbed_controller.sh` accordingly to your use case.
+1. Clone this repository to the tester machine. 
+2. Modify `config.yml` and `testbed_controller.sh` accordingly to your use case.
    - When using VMs, adjust:
-     - `devices.hypervisor.address`: Hypervisor's IP
+     - `devices.hypervisor.address`: Hypervisor's IP.
      - `devices.hypervisor.login`: Username of the hypervisor.
      - `devices.testmachine.vm_interface`: Tester machine interface connecting
        to the hypervisor.
      - `devices.vm.benchmark_bridge`: Hypervisor's interface to bridge the VMs.
-       - (Optional) Local container registry, leave blank when using the default
-         public registry specified on the `yaml` files:
-         - `devices.vm.repoip`: IP of the machine with the local container
-           registry.
-         - `devices.vm.repoport`: port of the machine with the local container
-           registry.
-         - `devices.vm.privaterepo`: Name of the local container registry.
    - When using PMs, adjust:
       - `devices.testmachine.pm_interface`: Name of the interface connected to
         the PMs.
-      - ... TBD   
-4. Run `./testbed_controller.sh` from the tester machine.
+      - `devices.pm.lighthouse.address` and `devices.pm.lighthouse.port`:
+        Nebula's address and port.
+      - `devices.pm.devices`: Set of PMs for the testbed. 
+        - `ssh_address`: Specific IP address of the PM.
+        - `login`: Username for SSH.
+        - `qos_interface`: Network interface of the PM to apply WAN emulation.
+        - `lighthouse`: True, if the machine is a lighthouse.
+    - (Optional) In both cases, local container registry, leave blank when using the default
+       public registry specified on the `yaml` files:
+       - `*.repoip`: IP of the machine with the local container
+         registry.
+       - `*.repoport`: port of the machine with the local container
+         registry.
+       - `*.privaterepo`: Name of the local container registry.
+3. Run `./testbed_controller.sh` from the tester machine.
 
 
 ### Troubleshooting
