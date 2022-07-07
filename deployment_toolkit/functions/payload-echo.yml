@@ -4,7 +4,7 @@ provider:
     gateway: http://127.0.0.1:8080
 functions:
     payload-echo:
-        image: fcarp10/payload-echo
+        image: fcarp10/payload-echo:v1.0.0
         name: payload-echo
         skip_build: true
         requests:
