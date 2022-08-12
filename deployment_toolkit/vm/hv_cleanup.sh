@@ -17,6 +17,11 @@ do
         ((TRIES++))
     fi
     echo "Destroying old machines..."
+    machines=$(vagrant status | grep libvirt | awk '{print $1}')
+    for machine in $machines
+    do
+        sudo virsh undefine vm_$machine
+    done
     vagrant destroy -f
     NUMBER_TOTAL=$(expr $(vagrant status | sed -n '/^Current/,/^This/p' | wc -l) - 4)
     NUMBER_STOPPED=$(vagrant status | grep "not created" | wc -l)
