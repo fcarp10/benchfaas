@@ -73,6 +73,7 @@ echo "export TERM=xterm" >> ~/.bashrc
         --set gateway.upstreamTimeout=$TIMEOUT \
         --set gateway.writeTimeout=$TIMEOUT \
         --set gateway.readTimeout=$TIMEOUT \
+	--set gateway.nodePort=$FAASPORT \
         --set faasnetes.writeTimeout=$TIMEOUT \
         --set faasnetes.readTimeout=$TIMEOUT \
         --set queueWorker.ackWait=$TIMEOUT \
@@ -94,8 +95,6 @@ echo "export TERM=xterm" >> ~/.bashrc
 
     echo "Testing OpenFaaS..."
     sudo -E kubectl -n openfaas get deployments -l "release=openfaas, app=openfaas"
-    FAASPORT=$(sudo -E kubectl get service gateway-external -n openfaas \
-        | grep -oP '(?<=8080:).*(?=/TCP)')
     export OPENFAAS_URL=http://127.0.0.1:$FAASPORT
     echo "export OPENFAAS_URL=http://127.0.0.1:$FAASPORT" >> /home/`whoami`/.bashrc
     sudo -E faas-cli login --username admin --password password
