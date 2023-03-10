@@ -25,6 +25,8 @@ Serverless functions used for the benchmarks can be found
 - Linux based OS
 - Apache JMeter v5.4.3
   ([download](https://jmeter.apache.org/download_jmeter.cgi))
+- K6 v0.39.0
+  ([download](https://k6.io/docs/getting-started/installation/))
 - (Optional) Local container registry
   ([instructions](https://docs.docker.com/registry/deploying/))
 

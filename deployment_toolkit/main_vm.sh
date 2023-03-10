@@ -6,14 +6,14 @@ source deployment_toolkit/wan_emulation/read_qos.sh
 trigger_vm_deployment() {
 	echo "Triggering deployment of $1 VM(s) of config $2"
 	NUMBER=$1
-        SIZE=$2
+    SIZE=$2
 	ADDRESS=$(parsecfg devices.hypervisor.address)
 	LOGIN=$(parsecfg devices.hypervisor.login)
 	WORKPATH=$(parsecfg devices.hypervisor.path)
 	echo "Installing to hypervisor $ADDRESS"
 	FAAS_IP=$(parsecfg devices.vm.benchmark_ip)
 	read_qos
-        trigger_vm_cleanup
+    trigger_vm_cleanup
 	copy_hv
 	configure_vms
 	ssh -n ${LOGIN}@${ADDRESS} "${WORKPATH}benchfaas/deployment_toolkit/vm/deploy_vms.sh"

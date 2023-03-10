@@ -2,8 +2,6 @@
 
 cd $(dirname $0)
 sleep 10
-killall -9 ruby-2.7
-killall -9 vagrant
 vagrant destroy -f
 sleep 10
 echo "Trying to create the headnode and lighthouse..."
@@ -28,6 +26,6 @@ done
 echo "Found $ACTIVENODES of $(($DEVNO+1)) expected"
 vagrant ssh -c "sudo kubectl get nodes"
 echo "All nodes joined, installing providers..."
-vagrant ssh -c "/vagrant/deployment_toolkit/k3s/k3s_openfaas.sh vm"
+vagrant ssh -c "/vagrant/deployment_toolkit/k3s/k3s.sh vm"
 if [ $? -ne 0 ]; then echo "There was an error while installing a node. Aborting..." \
 	&& exit 1; fi

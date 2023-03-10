@@ -1,0 +1,19 @@
+metadata:
+  annotations:
+    deployment.kubernetes.io/desired-replicas: "3"
+    deployment.kubernetes.io/max-replicas: "3"
+spec:
+  replicas: 3
+  template:
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: faas_function
+                operator: In
+                values:
+                - fakenews
+            topologyKey: "kubernetes.io/hostname"

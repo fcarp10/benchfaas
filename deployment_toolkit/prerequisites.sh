@@ -27,4 +27,5 @@ bootstrap() {
     done
         chmod +x ${BINARYDIR}/yq
     fi
+    export PATH=$PATH:/usr/local/go/bin
 }

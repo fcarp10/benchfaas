@@ -1,15 +1,22 @@
 benchmark:
   parameters:
-    1: none
+    1: 5
   tests_to_execute:
     pm:
       1:
-        opt: 1
+        opt: 9
+      2:
+        opt: 9
+      3:
+        opt: 9
 
     vm:
+      3:
+        small:
+          opt: 9
       1:
         small:
-          opt: 1
+          opt: 9
 
 qos:
   opt: ########### N = 5 ###########

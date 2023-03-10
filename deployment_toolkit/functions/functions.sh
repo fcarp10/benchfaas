@@ -1,5 +1,3 @@
-source $TOOLKITPATH/utilities/yaml_parser.sh
-
 deploy_functions() {
 for funct in $(parsecfg software.openfaas.functions)
 do

@@ -6,4 +6,5 @@ source deployment_toolkit/prerequisites.sh
 
 bootstrap
 deploy_and_test vm
+trigger_vm_cleanup
 deploy_and_test pm
