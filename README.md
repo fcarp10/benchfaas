@@ -2,6 +2,14 @@
 
 This repository contains the scripts for the automated deployment of BenchFaaS.
 
+## Changelog:
+
+### v1.0.0 (Sep 21, 2022)
+
+- F. Carpio, M. Michalke and A. Jukan, "BenchFaaS: Benchmarking Serverless
+  Functions in an Edge Computing Network Testbed," in IEEE Network, DOI:
+  [10.1109/MNET.125.2200294](https://doi.org/10.1109/MNET.125.2200294)
+
 ## Performance tests
 
 Five performance tests are defined using JMeter in
