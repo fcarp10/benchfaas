@@ -44,15 +44,15 @@ if [ "$HSTNM" = "lighthouse" ] || [ "$HSTNM" = "rpi20" ]
 then
     echo "Installing device $HSTNM as nebula lighthouse..."
     cp $NEBULAFILES/$HSTNM.yml /etc/nebula/nebula.yml
-    cp $NEBULAFILES/lighthouse.crt /etc/nebula/nebula.crt
-    cp $NEBULAFILES/lighthouse.key /etc/nebula/nebula.key
+    cp $NEBULAFILES/cert/lighthouse.crt /etc/nebula/nebula.crt
+    cp $NEBULAFILES/cert/lighthouse.key /etc/nebula/nebula.key
 else
     echo "Installing device $HSTNM as nebula client..."
     cp $NEBULAFILES/client.yml /etc/nebula/nebula.yml
-    cp $NEBULAFILES/$HSTNM.crt /etc/nebula/nebula.crt
-    cp $NEBULAFILES/$HSTNM.key /etc/nebula/nebula.key
+    cp $NEBULAFILES/cert/$HSTNM.crt /etc/nebula/nebula.crt
+    cp $NEBULAFILES/cert/$HSTNM.key /etc/nebula/nebula.key
 fi
-cp $NEBULAFILES/ca.crt /etc/nebula/
+cp $NEBULAFILES/cert/ca.crt /etc/nebula/
 
 #Creating and starting the service
 cat << EOF > /etc/systemd/system/nebula.service
