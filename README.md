@@ -49,7 +49,6 @@ Serverless functions used for the benchmarks can be found
   - Vagrant plugins
     ([installation](https://www.vagrantup.com/docs/plugins/usage)): 
     - `vagrant-libvirt`
-    - `vagrant-hostmanager`
   - netem (`tc`): already included in most Linux distros.
 - PMs:
   - x86_64/ARM64 based devices
@@ -77,7 +76,10 @@ and to all PMs.
      - `devices.hypervisor.login`: Username of the hypervisor.
      - `devices.testmachine.vm_interface`: Tester machine interface connecting
        to the hypervisor.
-     - `devices.vm.benchmark_bridge`: Hypervisor's interface to bridge the VMs.
+     - `devices.vm.benchmark_bridge`: Hypervisor's interface to bridge the VMs,
+       reachable from the tester machine.
+     - `devices.vm.benchmark_ip`: headnode's IP reachable from the tester
+       machine.
    - When using PMs, adjust:
       - `devices.testmachine.pm_interface`: Name of the interface connected to
         the PMs.

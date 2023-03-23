@@ -23,12 +23,6 @@ SCRIPT
 
 ENV['VAGRANT_NO_PARALLEL'] = 'yes'
 Vagrant.configure("2") do |config|
-  config.vm.provider "libvirt"
-  config.hostmanager.enabled = false
-  config.hostmanager.manage_host = false
-  config.hostmanager.manage_guest = true
-  config.hostmanager.ignore_private_ip = true
-  config.hostmanager.include_offline = true
 
   config.vm.define "lighthouse" do |lighthouse|
     lighthouse.vm.box = $VMIMAGE
@@ -36,7 +30,7 @@ Vagrant.configure("2") do |config|
     lighthouse.vm.network "public_network",
       bridge: $BRIDGE_BENCH, dev: $BRIDGE_BENCH, use_dhcp_assigned_default_route: true
     lighthouse.vm.synced_folder "../..", "/vagrant", type: "nfs", nfs_udp: false
-    lighthouse.vm.provider "libvirt" do |v1|
+    lighthouse.vm.provider $PROVIDER do |v1|
       v1.memory = "512"
       v1.cpus = "1"
     end
@@ -51,7 +45,7 @@ Vagrant.configure("2") do |config|
     headnode.vm.network "public_network",
       bridge: $BRIDGE_BENCH, dev: $BRIDGE_BENCH, ip: $BRIDGE_IP
     headnode.vm.synced_folder "../..", "/vagrant", type: "nfs", nfs_udp: false
-    headnode.vm.provider "libvirt" do |v3|
+    headnode.vm.provider $PROVIDER do |v3|
       v3.memory = "#{$VMMEM}"
       v3.cpus = "#{$VMCPU}"
     end
@@ -78,7 +72,7 @@ Vagrant.configure("2") do |config|
       worker.vm.network "public_network",
         bridge: $BRIDGE_BENCH, dev: $BRIDGE_BENCH, use_dhcp_assigned_default_route: true
       worker.vm.synced_folder "../..", "/vagrant", type: "nfs", nfs_udp: false
-      worker.vm.provider "libvirt" do |v1|
+      worker.vm.provider $PROVIDER do |v1|
         v1.memory = "#{$VMMEM}"
         v1.cpus = "#{$VMCPU}"
       end
