@@ -13,8 +13,8 @@ do
     machines=$(vagrant status | grep libvirt | awk '{print $1}')
     for machine in $machines
     do
-        sudo virsh undefine vm_$machine
-        sudo virsh destroy vm_$machine
+        virsh undefine vm_$machine
+        virsh destroy vm_$machine
     done
     vagrant destroy -f
     NUMBER_TOTAL=$(expr $(vagrant status | sed -n '/^Current/,/^This/p' | wc -l) - 4)

@@ -71,7 +71,9 @@ and to all PMs.
      - `devices.hypervisor.login`: Username of the hypervisor.
      - `devices.testmachine.vm_interface`: Tester machine interface connecting
        to the hypervisor.
+     - `devices.testmachine.path`: Full path of the locally cloned repo
      - `devices.vm.benchmark_bridge`: Hypervisor's interface to bridge the VMs.
+     - `devices.vm.benchmark_ip`: IP that will be reachable from the interface you specified above (e.g. 192.168.1.11 if your testmachine has 192.168.1.10 on that interface)
    - When using PMs, adjust:
       - `devices.testmachine.pm_interface`: Name of the interface connected to
         the PMs.
@@ -89,8 +91,20 @@ and to all PMs.
        - `*.repoport`: port of the machine with the local container
          registry.
        - `*.privaterepo`: Name of the local container registry.
-3. Run `./testbed_controller.sh` from the tester machine.
-
+3. On the hypervisor, ensure passwordless sudo permission for your user by adding the following section to the bottom of your sudoers file via `sudo visudo` (note: the user you provided has to be member of the group "sudo" listed in the last statement):
+```
+# Allow passwordless startup of Vagrant with NFS synced folder option.
+Cmnd_Alias VAGRANT_EXPORTS_UPDATE = /usr/bin/chown 0\:0 /tmp/*, /usr/bin/mv -f /tmp/* /etc/exports
+Cmnd_Alias VAGRANT_EXPORTS_ADD = /usr/bin/tee -a /etc/exports
+Cmnd_Alias VAGRANT_NFSD_CHECK = /usr/bin/systemctl status nfs-server.service, /usr/sbin/systemctl status nfs-server.service
+Cmnd_Alias VAGRANT_NFSD_START = /usr/bin/systemctl start nfs-server.service, /usr/sbin/systemctl start nfs-server.service
+Cmnd_Alias VAGRANT_NFSD_APPLY = /usr/bin/exportfs -ar, /usr/sbin/exportfs -ar
+Cmnd_Alias VAGRANT_EXPORTS_REMOVE = /bin/sed -r -e * d -ibak /tmp/exports, /usr/bin/cp /tmp/exports /etc/exports
+Cmnd_Alias LIBVIRT_MANAGE = /usr/bin/virsh /bin/virsh
+%sudo ALL=(root) NOPASSWD: VAGRANT_EXPORTS_UPDATE, VAGRANT_EXPORTS_ADD, VAGRANT_NFSD_CHECK, VAGRANT_NFSD_START, VAGRANT_NFSD_APPLY, VAGRANT_EXPORTS_REMOVE, LIBVIRT_MANAGE
+```
+4. Add the SSH key of your testmachine's user to the allowed hosts files on all machines you wish to benchmark so that you have passwordless access
+5. Run `./testbed_controller.sh` from the tester machine.
 
 ### Troubleshooting
 
@@ -110,3 +124,8 @@ Error while creating domain: Error saving the server: Call to virDomainDefineXML
 ```
 
 Check the solution from [here](https://github.com/kubevirt/kubevirt/issues/4303)
+
+If you forgot to modify your sudoers file, ran the script and your user's sudo password is not accepted anymore, the reason are likely too many failed password attempts. You can usually reset the counter like this:
+```
+faillock --user $USER --reset
+```

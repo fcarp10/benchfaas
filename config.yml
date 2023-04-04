@@ -74,24 +74,24 @@ software:
     version: 10.0.8
     function-namespace: openfaas-fn
     functions:
-      fakenews
+      hello-world
 
 devices:
   hypervisor:
           #path: "/opt/development/deployment-serverless/deployment/"
     path: "/tmp/"
-    address: 192.168.1.50
-    login: marc
+    address: 127.0.0.1
+    login: user
   testmachine:
-    path: "/opt/development/serverless-bench-journal/setup_new/deployment/"
+    path: "/opt/development/benchfaas/"
     resultspath: "/opt/development/logs/"
     pm_interface: enp6s0
-    vm_interface: enp6s0
+    vm_interface: eth0
   pm:
     path: "/tmp/"
-    reponame: privaterepo
-    repoport: 5000
-    repoip: 192.168.1.4
+    reponame:
+    repoport:
+    repoip:
     openfaas:
       port: 31112
     lighthouse:
@@ -113,12 +113,12 @@ devices:
       login: ubuntu
       qos_interface: eth0
   vm:
-    benchmark_bridge: enp179s0
-    benchmark_ip: 192.168.1.225
+    benchmark_bridge: eth0
+    benchmark_ip: 192.168.1.10
     image: generic/ubuntu2004
-    reponame: privaterepo
-    repoport: 5000
-    repoip: 192.168.1.4
+    reponame:
+    repoport:
+    repoip:
     openfaas:
       port: 31112
     machines:

@@ -10,7 +10,7 @@ install_repo_resolution() {
 	echo "Reading config for repo $REPONAME at $REPOIP:$REPOPORT"
 	echo "export TERM=xterm" >> ~/.bashrc
 	sudo mkdir -p /etc/rancher/k3s
-	if [[ -n $REPOIP ]]; then
+	if [[ $REPOIP != "null" ]]; then
 		if [[ -n $(cat /etc/hosts | grep ${REPONAME}) ]]
 		then
 			sudo sed -i "/${REPONAME}$/d" /etc/hosts

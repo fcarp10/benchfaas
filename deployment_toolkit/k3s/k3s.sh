@@ -15,7 +15,7 @@ source $TOOLKITPATH/utilities/yaml_parser.sh
 REPOPORT=$(parsecfg devices.$DEVTYPE.repoport)
 REPONAME=$(parsecfg devices.$DEVTYPE.reponame)
 DEBUG=$(parsecfg software.debug)
-if [[ $REPONAME != "null" && $REPOPORT != "null" ]]
+if [[ $REPONAME != "" && $REPONAME != "null" && $REPOPORT != "null" && $REPOPORT != "" ]]
 then
     REPOSITORY="${REPONAME}:${REPOPORT}/"
 else
