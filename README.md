@@ -1,5 +1,7 @@
 # BenchFaaS
 
+***Note: This project has been reimplemented using Ansible, please check [BenchFaster](https://github.com/fcarp10/benchfaster).**
+
 This repository contains the scripts for the automated deployment of BenchFaaS.
 
 ## Changelog:
